@@ -1,0 +1,57 @@
+/* main keypad calculator widget */
+#calc{width:520px;max-width:100%;margin:20px auto 0;background:linear-gradient(90deg,#f1f1f1 69%,#cecece 100%);border-radius:10px;padding:20px 0 30px}
+#calcTitre{text-align:center;font-weight:600;color:#062f5f;padding-bottom:6px;font-size:15px}
+#calcTotal{margin:0 25px;height:100px;padding:0 10px;border:1px solid #a4a4a4;border-bottom:1px solid #858585;text-align:right;color:#495474;background:#fff;border-radius:4px 4px 0 0}
+#calcTotalChiffre{font-size:56px;position:relative;top:6px;letter-spacing:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;outline:none;caret-color:#f66;padding-top:10px}
+#calcTotalChiffre:focus{box-shadow:0 5px 15px rgba(0,0,0,.35);color:#f66}
+#calcRetenu{font-size:16px;color:#8b8b8b;display:flex;justify-content:space-between;padding:2px 0 6px}
+#calcRetenu span:last-child{color:#aeaeae;font-size:12px}
+
+#calcKeys{display:flex;flex-wrap:wrap;justify-content:center;margin-top:20px;gap:0 20px}
+.calcCol{display:flex;flex-direction:column;align-items:center}
+.calcRow{display:flex;flex-wrap:wrap;justify-content:center}
+.btnCalc{border:1px solid #052f5f;border-radius:10px;text-align:center;color:#052f5f;box-shadow:1px 1px 8px #03142d;font-size:34px;width:70px;height:60px;cursor:pointer;background:#fff;margin:5px;display:flex;align-items:center;justify-content:center;touch-action:manipulation;font-family:"Poppins",sans-serif}
+.btnCalc:active{border:1px solid #959595;box-shadow:none;color:#717171;background:#eee}
+.btnCalcWide{width:145px}
+.btnCalc#btnCE{background:#669fff;color:#000}
+.btnCalc#btnC{background:#f66;color:#000}
+.btnCalc#btnEqual{background:#fff266;color:#000}
+.btnCalc#btnAdd{background:#66ff81;color:#000;height:130px;margin-top:-35px;position:relative}
+#btnThousands{margin-top:10px;font-size:14px;padding:8px 16px}
+
+@media (max-width:600px){
+  #calc{padding:12px 0 20px}
+  #calcTitre{display:none}
+  #calcTotalChiffre{font-size:38px}
+  .btnCalc{width:52px;height:48px;font-size:24px;margin:3px}
+  .btnCalcWide{width:110px}
+  .btnCalc#btnAdd{height:104px;margin-top:-30px}
+}
+
+/* history table */
+#historyWrap{max-width:520px;margin:40px auto 0}
+#historyTitle{text-align:center;font-size:20px;font-weight:600;color:#062f5f}
+#historyTitle small{display:block;font-style:italic;color:#777;font-size:13px;font-weight:400}
+.table-responsive{overflow-x:auto}
+#historyTable{width:100%;border-collapse:collapse;margin-top:10px}
+#historyTable th{background:#ebeff6;padding:8px;font-size:14px;text-align:left}
+#historyTable td{padding:6px 8px;border-bottom:1px solid #eee;font-size:14px}
+#historyTable td[contenteditable]{outline:none}
+#historyTable td[contenteditable]:focus{background:#f5f9ff}
+#historyButtons{text-align:center;margin-top:14px}
+
+/* generic tool widget (used by all other calculator pages) */
+.toolCard{max-width:640px;margin:20px auto 0;background:linear-gradient(90deg,#f1f1f1 69%,#cecece 100%);border-radius:10px;padding:24px}
+.toolCard h1{margin-top:0;font-size:24px;text-align:center}
+.field{margin-bottom:16px}
+.field label{display:block;font-weight:600;color:#062f5f;margin-bottom:6px;font-size:14px}
+.field input[type=text],.field input[type=number],.field select{width:100%;padding:10px 12px;border:1px solid #a4a4a4;border-radius:6px;font-size:16px;font-family:"Poppins",sans-serif;background:#fff}
+.field .row{display:flex;gap:10px}
+.field .row>*{flex:1}
+.toolActions{text-align:center;margin-top:10px}
+.resultBox{margin-top:18px;background:#fff;border:1px solid #a4a4a4;border-radius:8px;padding:16px;text-align:center;min-height:30px}
+.resultBox .big{font-size:32px;font-weight:600;color:#062f5f}
+.resultBox .sub{color:#666;font-size:14px;margin-top:4px}
+.resultBox.error{color:#c0392b;border-color:#e0a1a1;background:#fff5f5}
+.stepsBox{margin-top:14px;font-size:14px;color:#444;background:#fff;border-radius:8px;padding:12px 16px}
+.stepsBox ol{margin:0;padding-left:18px}

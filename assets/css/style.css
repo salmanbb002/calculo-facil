@@ -1,0 +1,108 @@
+/* calculo-facil — shared theme
+   Palette:
+   - bg:            #fefefe
+   - ink:           #062f5f (headings / footer text)
+   - ink-strong:    #042e5d
+   - brand blue:    #0054ba -> #042e5d (gradient, nav/buttons)
+   - link:          #00469e
+   - muted:         #757575 / #4f4f4f
+   - card bg:       #f1f1f1 -> #cecece
+*/
+
+@font-face{
+  font-family:"Calc Display";
+  src:local("Poppins SemiBold");
+  font-weight:600;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  padding:0 5px;
+  background-color:#fefefe;
+  color:#222;
+  font-family:"Poppins",Verdana,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:#00469e;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{text-decoration-thickness:2px}
+img{max-width:100%}
+h1,h2,h3{font-family:"Poppins",sans-serif;color:#062f5f;font-weight:600}
+strong{background-color:#eaeaea;text-decoration:underline;text-decoration-color:#838383;text-decoration-thickness:2px;text-underline-offset:4px}
+
+/* ---------- ad slots (placeholders — swap in your own ad network) ---------- */
+.ad-slot{margin:10px auto;text-align:center;max-width:1200px}
+.ad-slot .ad-box{display:flex;align-items:center;justify-content:center;background:repeating-linear-gradient(45deg,#f4f4f4,#f4f4f4 10px,#eee 10px,#eee 20px);border:1px dashed #ccc;border-radius:6px;color:#999;font-size:12px;min-height:90px}
+#pEnHaut .ad-box,#pEnBas .ad-box{min-height:90px}
+#pAGauche{margin-top:30px}
+#pAGauche .ad-box{min-height:250px;margin-bottom:20px}
+#pADroite{margin-top:30px}
+#pADroite .ad-box{min-height:800px}
+@media (max-width:945px){#pAGauche{display:none}}
+@media (max-width:1275px){#pADroite{display:none}}
+
+/* ---------- header ---------- */
+#titre_simple{display:flex;justify-content:space-between;margin-bottom:5px;align-items:baseline;flex-wrap:wrap}
+#titre_simple #titre{color:#042e5d;letter-spacing:2pt;padding-left:5px;font-size:25px;font-weight:600}
+#titre_simple #titre a{color:inherit;text-decoration:none}
+#titre_simple #titre span{color:#023370;font-size:14px;letter-spacing:1pt;margin-left:10px;font-weight:400;display:none}
+#titre_simple #simple{letter-spacing:1pt;padding-right:5px;font-size:20px;color:#757575}
+@media screen and (max-width:1000px){#titre_simple #simple{display:none}}
+@media screen and (max-width:600px){#titre_simple #titre span{display:inline-block}}
+
+#menu_hamburger{display:none;background-color:#042e5d;height:40px;text-align:center;margin-bottom:2px;cursor:pointer;border-radius:5px;margin-top:10px;align-items:center;justify-content:center}
+#menu_hamburger img{width:24px;height:18px}
+@media screen and (max-width:600px){#menu_hamburger{display:flex}}
+
+nav{font-family:"Poppins",sans-serif;font-size:16px;border:1px solid #2c2c2c;border-radius:4px;background:linear-gradient(#0054ba,#042e5d);color:#fff;padding:1px;display:flex;flex-wrap:wrap}
+nav>div{border:1px solid #f8f8ff;padding:9px 13px;letter-spacing:2px;cursor:pointer;min-width:fit-content}
+nav>div:first-child{border-top-left-radius:4px;border-bottom-left-radius:4px}
+nav>div:last-child{border-top-right-radius:4px;border-bottom-right-radius:4px}
+nav>div:hover{text-decoration:underline}
+nav>div.active{background:#686565}
+@media screen and (max-width:600px){nav{display:none}nav.open{display:flex;flex-direction:column}}
+
+#navDetails{display:none}
+#navDetails.open{display:block}
+#navDetails>div{margin-top:2px;background:linear-gradient(to right,#454545,#6c6c6c);color:#fff;font-size:16px;padding:14px;letter-spacing:.5pt;display:none}
+#navDetails>div.open{display:block}
+#navDetails .navTitre{font-weight:700;margin:10px 0 4px;color:#ffd166}
+#navDetails .navTitre:first-child{margin-top:0}
+#navDetails a{color:#fff;text-decoration:none}
+#navDetails a:hover{text-decoration:underline}
+#navDetails>div>div{padding:3px 0}
+
+/* ---------- layout grid ---------- */
+#grid-container{display:grid;grid-template-columns:minmax(0,max-content) 1fr minmax(0,max-content);justify-content:space-between}
+#grid-container #parties{margin-top:9px;min-width:0}
+#parties #partie2{margin:auto;max-width:700px}
+
+/* ---------- footer ---------- */
+footer{margin-top:30px;background:linear-gradient(to bottom,#fbfbfb,#fff);color:#062f5f;font-size:14px;letter-spacing:.5px;padding:20px 0;border-top:1px solid #eee}
+footer a{color:#062f5f;text-decoration:none}
+footer a:hover{text-decoration:underline}
+#footer2{display:flex;justify-content:space-evenly;flex-wrap:wrap;padding:0 20px}
+#footer2>div{margin:10px;min-width:150px}
+#footer2 .titreFooter{font-weight:700;font-size:18px;margin-bottom:12px}
+#footer2>div>div{margin-bottom:6px}
+#footer1{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;color:#888;font-size:13px;margin-top:10px}
+
+/* ---------- generic buttons ---------- */
+.btnGeneral{font-size:18px;letter-spacing:1px;padding:12px 20px;background:linear-gradient(#0054ba,#042e5d);border-radius:6px;color:#fff;border:none;cursor:pointer;font-family:"Poppins",sans-serif}
+.btnGeneral:active{background:linear-gradient(#000810,#005bca)}
+.btnGeneral:hover{text-decoration:underline}
+
+/* ---------- content sections ---------- */
+#informationCalculatrice{max-width:900px;margin:40px auto 0}
+#informationCalculatrice section{margin-bottom:30px}
+#informationCalculatrice p{line-height:1.6;color:#333}
+.bulleInfo{padding:12px;border-radius:5px;border:2px dashed #b6b6b6;color:#5b5b5b}
+.textAlignCenter{text-align:center}
+kbd{background:#eee;border:1px solid #ccc;border-radius:4px;padding:2px 8px;font-family:monospace}
+
+#contactBug{text-align:center;font-size:14px;color:#666;margin:10px 0}
+
+/* breadcrumb */
+.breadcrumb{font-size:13px;color:#777;margin:10px 0}
+.breadcrumb a{color:#00469e}

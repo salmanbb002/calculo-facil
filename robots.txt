@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://calculo-facil.vercel.app/sitemap.xml
