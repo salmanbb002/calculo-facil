@@ -258,6 +258,7 @@ ${css}
 <meta property="og:type" content="website">
 <meta property="og:url" content="${canonical}">
 <meta name="google-site-verification" content="4mEW2Z7UoUczoFaq9vRJuT5g_xz29R6Ygh0hwo1uLOI" />
+<meta name="google-site-verification" content="0oXXyPJ95b01GOjfqOhkkEJXuicOfk7ZFKJDMYD-05Q" />
 ${schemas}
 </head>
 <body>
