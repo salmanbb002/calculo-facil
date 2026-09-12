@@ -3,9 +3,15 @@
   "trailingSlash": false,
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/",
       "has": [{ "type": "host", "value": "www.calculadorasonline.xyz" }],
-      "destination": "https://calculadorasonline.xyz/:path*",
+      "destination": "https://calculadorasonline.xyz/",
+      "permanent": true
+    },
+    {
+      "source": "/:path+",
+      "has": [{ "type": "host", "value": "www.calculadorasonline.xyz" }],
+      "destination": "https://calculadorasonline.xyz/:path+",
       "permanent": true
     }
   ]
