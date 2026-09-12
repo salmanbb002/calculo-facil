@@ -79,3 +79,9 @@
 .graphCalc{max-width:700px}
 #graphCanvasWrap{margin-top:14px;overflow-x:auto;text-align:center}
 #graphCanvas{max-width:100%;border:1px solid #a4a4a4;border-radius:8px;background:#fff}
+
+/* ---------- "outras ferramentas" quick links (homepage, below the keypad) ---------- */
+#outrasFerramentas{max-width:520px;margin:16px auto 0;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px}
+.outrasFerramentasLabel{font-weight:600;color:#062f5f;font-size:14px;margin-right:4px}
+#outrasFerramentas a{background:#eef3fb;color:#00469e;border-radius:6px;padding:7px 12px;font-size:14px;text-decoration:none}
+#outrasFerramentas a:hover{background:#dde8f8;text-decoration:underline}

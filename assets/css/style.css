@@ -114,3 +114,8 @@ kbd{background:#eee;border:1px solid #ccc;border-radius:4px;padding:2px 8px;font
 .relatedTools li a:hover{background:#e4e4e4;text-decoration:underline}
 .seoContent ul:not(.faqBlock ul){padding-left:20px}
 .seoContent ul li{margin-bottom:4px;line-height:1.5}
+
+/* ---------- WhatsApp floating button (site-wide) ---------- */
+#waFloat{position:fixed;bottom:20px;right:20px;width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.3);z-index:999;text-decoration:none}
+#waFloat:hover{background:#1ebe57}
+@media (max-width:600px){#waFloat{width:48px;height:48px;bottom:14px;right:14px}#waFloat svg{width:24px;height:24px}}

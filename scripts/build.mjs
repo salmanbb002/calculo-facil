@@ -6,7 +6,7 @@
 import { writeFileSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { page, h, SITE_URL, SITE_TITLE, seoContent, faqBlock } from './shell.mjs';
+import { page, h, SITE_URL, SITE_TITLE, CONTACT_EMAIL, seoContent, faqBlock } from './shell.mjs';
 import { TOOLS } from './tools-data.mjs';
 import { SEO_CONTENT } from './seo-content.mjs';
 
@@ -80,6 +80,12 @@ const calcWidget = `
     <button class="btnGeneral" id="historyExportCsv" type="button">Exportar CSV</button>
     <button class="btnGeneral" id="historyExportPdf" type="button">Exportar PDF</button>
   </div>
+</div>
+<div id="outrasFerramentas">
+  <span class="outrasFerramentasLabel">Outras ferramentas</span>
+  <a href="/calculadora-cientifica">Calculadora científica</a>
+  <a href="/calculadora-grafica">Calculadora gráfica</a>
+  <a href="/percentagem">Percentagens</a>
 </div>
 <section id="informationCalculatrice">
   <section>
@@ -157,8 +163,6 @@ for (const t of TOOLS) {
 }
 
 /* ---------------- static / legal pages ---------------- */
-const CONTACT_EMAIL = 'contato@calculadorasonline.xyz';
-
 const staticPages = [
   { slug: 'contato', title: `Contato — ${SITE_TITLE}`, h1: 'Contato',
     body: `<p>Encontrou um erro de cálculo, um bug ou quer sugerir uma nova calculadora? Adoraríamos ouvir você.</p>
