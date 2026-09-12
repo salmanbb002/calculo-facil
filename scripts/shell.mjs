@@ -3,7 +3,7 @@
 
 export const SITE_NAME = 'calculo-facil';
 export const SITE_TITLE = 'Calculadora Fácil';
-export const SITE_URL = 'https://calculo-facil-delta.vercel.app'; // placeholder — swap for the real domain once you have it
+export const SITE_URL = 'https://calculadorasonline.xyz';
 
 export const NAV = [
   {
