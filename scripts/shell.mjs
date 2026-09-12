@@ -195,8 +195,7 @@ export function header(activeId) {
     return `<div id="${c.panel}">${groups}</div>`;
   }).join('');
 
-  return `<div id="pEnHaut"><div class="ad-slot"><div class="ad-box">Espaço publicitário</div></div></div>
-<header>
+  return `<header>
 <div id="titre_simple"><div id="titre"><a href="/">${SITE_TITLE}</a> <span>⬇︎ Clique para mostrar os menus</span></div><div id="simple">Calculadoras simples</div></div>
 <div id="menu_hamburger" role="button" aria-label="Abrir o menu principal" tabindex="0"><img src="/assets/img/menu.svg" alt="Menu" width="24" height="18"></div>
 <nav>${navBtns}</nav>
@@ -216,11 +215,12 @@ export function footer() {
 </footer>`;
 }
 
-export function page({ slug, title, description, activeNav, bodyHtml, extraCss = [], extraJs = [], inlineScript = '', breadcrumb }) {
+export function page({ slug, title, description, activeNav, bodyHtml, extraCss = [], extraJs = [], inlineScript = '', breadcrumb, jsonLd = [] }) {
   const canonical = slug === '' ? `${SITE_URL}/` : `${SITE_URL}/${slug}`;
   const css = extraCss.map(f => `<link rel="stylesheet" href="${f}">`).join('\n');
   const js = extraJs.map(f => `<script defer src="${f}"></script>`).join('\n');
   const crumb = breadcrumb ? `<div class="breadcrumb"><a href="/">Início</a> › ${breadcrumb}</div>` : '';
+  const schemas = jsonLd.map(obj => `<script type="application/ld+json">${JSON.stringify(obj)}</script>`).join('\n');
   return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -241,19 +241,17 @@ ${css}
 <meta property="og:description" content="${description}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="${canonical}">
+${schemas}
 </head>
 <body>
 ${header(activeNav)}
 <div id="grid-container">
-<div id="pAGauche"><div class="ad-slot"><div class="ad-box">Anúncio</div></div></div>
 <main id="parties"><div id="partie2">
 <div id="contactBug"><div>Um bug? Uma sugestão? <a href="/contato">Entre em contato</a></div></div>
 ${crumb}
 ${bodyHtml}
 </div></main>
-<div id="pADroite"><div class="ad-slot"><div class="ad-box">Anúncio</div></div></div>
 </div>
-<div id="pEnBas"><div class="ad-slot"><div class="ad-box">Espaço publicitário</div></div></div>
 ${footer()}
 <script src="/assets/js/app.js"></script>
 <script src="/assets/js/engines.js"></script>
@@ -261,6 +259,52 @@ ${js}
 ${inlineScript ? `<script>\n(function(){\n${inlineScript}\n})();\n</script>` : ''}
 </body>
 </html>`;
+}
+
+/* ---------- SEO content block: intro + sections + FAQ (with matching FAQPage schema) + related tools ---------- */
+function flatLinks() {
+  const out = [];
+  for (const cat of NAV) {
+    for (const g of cat.groups) {
+      for (const l of g.links) out.push({ href: l.href, label: l.label, navId: cat.id, navLabel: cat.label });
+    }
+  }
+  return out;
+}
+const ALL_LINKS = flatLinks();
+
+export function relatedTools(activeNav, currentHref, count = 4) {
+  const sameCat = ALL_LINKS.filter(l => l.navId === activeNav && l.href !== currentHref);
+  const picks = sameCat.slice(0, count);
+  if (!picks.length) return '';
+  const items = picks.map(l => `<li><a href="${l.href}">${l.label}</a></li>`).join('');
+  return `<section class="relatedTools"><h2>Ferramentas relacionadas</h2><ul>${items}</ul></section>`;
+}
+
+export function faqBlock(faq, pageUrl) {
+  if (!faq || !faq.length) return { html: '', schema: null };
+  const html = `<section class="faqBlock"><h2>Perguntas frequentes</h2>${faq.map(f => `<div class="faqItem"><h3>${f.q}</h3><p>${f.a}</p></div>`).join('')}</section>`;
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map(f => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a }
+    }))
+  };
+  return { html, schema };
+}
+
+export function seoContent({ intro = '', sections = [], faq = [] }, activeNav, currentHref) {
+  const introHtml = intro ? `<section class="toolIntro"><p>${intro}</p></section>` : '';
+  const sectionsHtml = sections.map(s => `<section><h2>${s.h2}</h2>${s.html}</section>`).join('');
+  const { html: faqHtml, schema } = faqBlock(faq, currentHref);
+  const relatedHtml = relatedTools(activeNav, currentHref);
+  return {
+    html: `<div class="seoContent">${introHtml}${sectionsHtml}${faqHtml}${relatedHtml}</div>`,
+    jsonLd: schema ? [schema] : []
+  };
 }
 
 /* ---------- small HTML helpers used by tool builders ---------- */

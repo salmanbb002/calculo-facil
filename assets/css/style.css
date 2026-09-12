@@ -31,17 +31,6 @@ img{max-width:100%}
 h1,h2,h3{font-family:"Poppins",sans-serif;color:#062f5f;font-weight:600}
 strong{background-color:#eaeaea;text-decoration:underline;text-decoration-color:#838383;text-decoration-thickness:2px;text-underline-offset:4px}
 
-/* ---------- ad slots (placeholders — swap in your own ad network) ---------- */
-.ad-slot{margin:10px auto;text-align:center;max-width:1200px}
-.ad-slot .ad-box{display:flex;align-items:center;justify-content:center;background:repeating-linear-gradient(45deg,#f4f4f4,#f4f4f4 10px,#eee 10px,#eee 20px);border:1px dashed #ccc;border-radius:6px;color:#999;font-size:12px;min-height:90px}
-#pEnHaut .ad-box,#pEnBas .ad-box{min-height:90px}
-#pAGauche{margin-top:30px}
-#pAGauche .ad-box{min-height:250px;margin-bottom:20px}
-#pADroite{margin-top:30px}
-#pADroite .ad-box{min-height:800px}
-@media (max-width:945px){#pAGauche{display:none}}
-@media (max-width:1275px){#pADroite{display:none}}
-
 /* ---------- header ---------- */
 #titre_simple{display:flex;justify-content:space-between;margin-bottom:5px;align-items:baseline;flex-wrap:wrap}
 #titre_simple #titre{color:#042e5d;letter-spacing:2pt;padding-left:5px;font-size:25px;font-weight:600}
@@ -74,9 +63,9 @@ nav>div.active{background:#686565}
 #navDetails>div>div{padding:3px 0}
 
 /* ---------- layout grid ---------- */
-#grid-container{display:grid;grid-template-columns:minmax(0,max-content) 1fr minmax(0,max-content);justify-content:space-between}
+#grid-container{display:block}
 #grid-container #parties{margin-top:9px;min-width:0}
-#parties #partie2{margin:auto;max-width:700px}
+#parties #partie2{margin:auto;max-width:760px}
 
 /* ---------- footer ---------- */
 footer{margin-top:30px;background:linear-gradient(to bottom,#fbfbfb,#fff);color:#062f5f;font-size:14px;letter-spacing:.5px;padding:20px 0;border-top:1px solid #eee}
@@ -106,3 +95,22 @@ kbd{background:#eee;border:1px solid #ccc;border-radius:4px;padding:2px 8px;font
 /* breadcrumb */
 .breadcrumb{font-size:13px;color:#777;margin:10px 0}
 .breadcrumb a{color:#00469e}
+
+/* ---------- SEO content block (intro / sections / FAQ / related tools) ---------- */
+.seoContent{margin-top:28px;max-width:700px}
+.seoContent section{margin-bottom:22px}
+.seoContent h2{font-size:19px;margin:0 0 8px}
+.seoContent h3{font-size:16px;margin:0 0 4px}
+.seoContent p{line-height:1.65;color:#333;margin:0 0 10px}
+.seoContent .toolIntro p{font-size:15px}
+.seoContent table{border-collapse:collapse;width:100%;margin:8px 0 14px;font-size:14px}
+.seoContent table th,.seoContent table td{border:1px solid #e2e2e2;padding:6px 10px;text-align:left}
+.seoContent table th{background:#f4f4f4}
+.seoContent .faqItem{margin-bottom:14px}
+.seoContent .faqItem h3{color:#062f5f}
+.relatedTools ul{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:8px}
+.relatedTools li{background:#f1f1f1;border-radius:6px}
+.relatedTools li a{display:block;padding:8px 12px;text-decoration:none;color:#00469e;font-size:14px}
+.relatedTools li a:hover{background:#e4e4e4;text-decoration:underline}
+.seoContent ul:not(.faqBlock ul){padding-left:20px}
+.seoContent ul li{margin-bottom:4px;line-height:1.5}
