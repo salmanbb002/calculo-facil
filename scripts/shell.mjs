@@ -257,6 +257,7 @@ ${css}
 <meta property="og:description" content="${description}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="${canonical}">
+<meta name="google-site-verification" content="4mEW2Z7UoUczoFaq9vRJuT5g_xz29R6Ygh0hwo1uLOI" />
 ${schemas}
 </head>
 <body>
