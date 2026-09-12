@@ -7,6 +7,55 @@
 
 export const SEO_CONTENT = {
 
+'calculadora-cientifica': {
+  intro: 'Esta <strong>calculadora científica online</strong> resolve expressões matemáticas completas — seno, cosseno, tangente, logaritmos, raízes, potências e fatorial — digitando a expressão diretamente, sem precisar apertar uma tecla por vez como em uma calculadora de bolso comum.',
+  sections: [
+    { h2: 'Como usar a calculadora científica', html: '<p>Toque nos botões para montar a expressão no visor (por exemplo, <code>sin(30)+sqrt(16)</code>) e pressione "=" para calcular. O botão DEG/RAD alterna entre graus e radianos para as funções trigonométricas — use DEG para ângulos em graus (como 30, 45, 90) e RAD para ângulos em radianos (como π/2).</p>' },
+    { h2: 'Funções disponíveis', html: '<p>sin, cos, tan (trigonométricas), log (base 10), ln (logaritmo natural), √ (raiz quadrada), ^ (potência), ! (fatorial), π e e (constantes), além de parênteses para agrupar operações complexas e o botão Ans para reutilizar o último resultado.</p>' }
+  ],
+  faq: [
+    { q: 'Como alternar entre graus e radianos?', a: 'Toque no botão DEG/RAD no canto superior direito da calculadora. Em DEG, sin(90) retorna 1; em RAD, use sin(pi/2) para o mesmo resultado.' },
+    { q: 'Esta calculadora funciona com parênteses e operações encadeadas?', a: 'Sim. Você pode digitar expressões complexas com múltiplos parênteses, como (2+3)*sqrt(16)-log(100), e a calculadora resolve respeitando a ordem correta das operações.' },
+    { q: 'O que o botão "Ans" faz?', a: 'Insere o resultado do último cálculo na posição atual do cursor, permitindo encadear novas operações a partir do resultado anterior sem redigitá-lo.' }
+  ]
+},
+
+'calculadora-grafica': {
+  intro: 'Plote o <strong>gráfico de qualquer função matemática</strong> f(x) instantaneamente — digite a função, escolha o intervalo de x e veja a curva desenhada automaticamente, útil para estudos de funções, trigonometria e cálculo.',
+  sections: [
+    { h2: 'Como usar a calculadora gráfica', html: '<p>Digite a função usando x como variável (por exemplo, <code>x^2</code>, <code>sin(x)</code>, <code>sqrt(x)+2</code>), defina o intervalo mínimo e máximo de x, e clique em "Plotar gráfico". As funções trigonométricas aqui usam radianos, o padrão matemático para gráficos.</p>' },
+    { h2: 'Exemplos de funções para testar', html: '<p><code>x^2</code> (parábola), <code>sin(x)</code> (onda senoidal), <code>1/x</code> (hipérbole, observe a descontinuidade em x=0), <code>sqrt(x)</code> (apenas para x ≥ 0), <code>x^3-3*x</code> (cúbica com pontos de inflexão).</p>' }
+  ],
+  faq: [
+    { q: 'As funções trigonométricas usam graus ou radianos no gráfico?', a: 'Radianos — o padrão matemático usado em gráficos de função. Por isso sin(x) completa um ciclo completo a cada 2π (≈ 6,28) unidades de x, não a cada 360.' },
+    { q: 'O que significa quando o gráfico aparece com um "buraco"?', a: 'Indica que a função não é definida naquele ponto (por exemplo, 1/x em x=0) — a calculadora pula esses pontos em vez de desenhar um valor incorreto.' }
+  ]
+},
+
+'calculadora-salario-liquido': {
+  intro: 'Calcule o <strong>salário líquido</strong> a partir do salário bruto, com os descontos de INSS e IRRF aplicados automaticamente conforme as tabelas progressivas vigentes — descubra exatamente quanto cai na conta todo mês.',
+  sections: [
+    { h2: 'Como o salário líquido é calculado', html: '<p>Salário líquido = salário bruto − INSS − IRRF. O INSS é calculado por faixas progressivas sobre o salário bruto; o IRRF é calculado por faixas progressivas sobre o salário já descontado do INSS, considerando também a dedução por dependente.</p><p><strong>Atenção:</strong> as tabelas de INSS e IRRF são reajustadas anualmente pelo governo federal. Os valores usados aqui seguem as faixas vigentes mais recentes conhecidas — confirme sempre na Receita Federal/INSS antes de usar o resultado para decisões oficiais.</p>' }
+  ],
+  faq: [
+    { q: 'Por que o desconto de INSS não é uma porcentagem fixa?', a: 'Porque o INSS usa alíquotas progressivas por faixa de salário — uma parte do salário é descontada a 7,5%, a próxima faixa a 9%, e assim por diante, em vez de aplicar uma única alíquota sobre o valor total.' },
+    { q: 'O que é a dedução por dependente no IRRF?', a: 'Cada dependente declarado reduz a base de cálculo do IRRF em um valor fixo por mês, diminuindo o imposto devido — útil para quem tem filhos ou outros dependentes legais.' },
+    { q: 'Este cálculo inclui FGTS?', a: 'Não. O FGTS (8% do salário) é depositado pelo empregador em uma conta separada e não é descontado do salário do funcionário, por isso não afeta o cálculo do líquido recebido.' }
+  ]
+},
+
+'calculadora-ferias': {
+  intro: 'Calcule o <strong>valor líquido das suas férias</strong>, incluindo o terço constitucional e os descontos de INSS e IRRF, com a opção de simular a venda de dias (abono pecuniário) — saiba exatamente quanto você vai receber antes de sair de férias.',
+  sections: [
+    { h2: 'Como o valor das férias é calculado', html: '<p>O valor bruto das férias é (salário ÷ 30) × dias de férias, mais o terço constitucional (1/3 desse valor), garantido pela Constituição Federal. Sobre esse total incidem INSS e IRRF, da mesma forma que no salário mensal. O abono pecuniário (venda de até 10 dias de férias) é isento de INSS e IRRF e pago separadamente.</p>' }
+  ],
+  faq: [
+    { q: 'O que é o terço constitucional de férias?', a: 'É um adicional de 1/3 sobre o valor das férias, garantido pela Constituição Federal de 1988 a todo trabalhador CLT, pago junto com o valor das férias.' },
+    { q: 'Quantos dias de férias posso vender (abono pecuniário)?', a: 'Até 10 dias (1/3 dos 30 dias de férias) podem ser convertidos em dinheiro em vez de descanso, mediante solicitação formal ao empregador com pelo menos 15 dias de antecedência.' },
+    { q: 'O abono pecuniário tem desconto de INSS e IRRF?', a: 'Não. O abono pecuniário é isento de INSS e IRRF, diferente do valor normal das férias (que sofre os mesmos descontos do salário mensal).' }
+  ]
+},
+
 'calculo-raiz-quadrada': {
   intro: 'A <strong>raiz quadrada</strong> (√) de um número é o valor que, multiplicado por si mesmo, resulta no número original. Esta calculadora de raiz quadrada online resolve o cálculo instantaneamente, incluindo números decimais, e mostra o resultado com 5 casas decimais de precisão.',
   sections: [

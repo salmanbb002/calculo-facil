@@ -1229,6 +1229,138 @@ document.getElementById('btnCalc').addEventListener('click',function(){
   var box=document.getElementById('result');
   CF.showResult(box,CF.fmt(ENG.misc.macroCalories(p,c,f))+' kcal');
 });`
+},
+
+/* ============ CALCULADORA (ferramentas avançadas) ============ */
+{
+  slug: 'calculadora-cientifica', title: 'Calculadora Científica Online — Calculadora Fácil',
+  description: 'Calculadora científica online gratuita com seno, cosseno, tangente, logaritmo, raiz, potência, fatorial e mais.',
+  activeNav: 'calculatrice', breadcrumb: 'Calculadora › Calculadora científica',
+  body: `<div class="toolCard sciCalc">
+<h1>Calculadora Científica Online</h1>
+<div class="sciDisplayWrap">
+  <input type="text" id="sciDisplay" class="sciDisplay" value="0" autocomplete="off" inputmode="text">
+  <div class="sciModeRow"><button type="button" id="sciModeToggle" class="sciModeBtn">DEG</button></div>
+</div>
+<div class="sciKeys">
+  <button type="button" data-ins="sin(">sin</button>
+  <button type="button" data-ins="cos(">cos</button>
+  <button type="button" data-ins="tan(">tan</button>
+  <button type="button" data-ins="log(">log</button>
+  <button type="button" data-ins="ln(">ln</button>
+  <button type="button" id="sciDel">⌫</button>
+
+  <button type="button" data-ins="(">(</button>
+  <button type="button" data-ins=")">)</button>
+  <button type="button" data-ins="sqrt(">√</button>
+  <button type="button" data-ins="^">^</button>
+  <button type="button" data-ins="!">!</button>
+  <button type="button" id="sciAC">AC</button>
+
+  <button type="button" data-ins="7">7</button>
+  <button type="button" data-ins="8">8</button>
+  <button type="button" data-ins="9">9</button>
+  <button type="button" class="sciOp" data-ins="÷">÷</button>
+  <button type="button" data-ins="pi">π</button>
+  <button type="button" data-ins="e">e</button>
+
+  <button type="button" data-ins="4">4</button>
+  <button type="button" data-ins="5">5</button>
+  <button type="button" data-ins="6">6</button>
+  <button type="button" class="sciOp" data-ins="×">×</button>
+  <button type="button" data-ins="exp(">eˣ</button>
+  <button type="button" data-ins="^2">x²</button>
+
+  <button type="button" data-ins="1">1</button>
+  <button type="button" data-ins="2">2</button>
+  <button type="button" data-ins="3">3</button>
+  <button type="button" class="sciOp" data-ins="-">-</button>
+  <button type="button" data-ins="ans">Ans</button>
+  <button type="button" data-ins="%">%</button>
+
+  <button type="button" data-ins="0">0</button>
+  <button type="button" data-ins=".">.</button>
+  <button type="button" class="sciOp" data-ins="+">+</button>
+  <button type="button" id="sciEq">=</button>
+</div>
+<div class="resultBox" id="sciResult"><div class="sub">O resultado aparecerá aqui</div></div>
+</div>`,
+  extraJs: ['/assets/js/scientific.js']
+},
+{
+  slug: 'calculadora-grafica', title: 'Calculadora Gráfica Online — Calculadora Fácil',
+  description: 'Plote gráficos de funções matemáticas online, de forma gratuita e instantânea.',
+  activeNav: 'calculatrice', breadcrumb: 'Calculadora › Calculadora gráfica',
+  body: `<div class="toolCard graphCalc">
+<h1>Calculadora Gráfica Online</h1>
+<div class="field"><label>Função f(x)</label><input type="text" id="graphFn" value="sin(x)" autocomplete="off"></div>
+<div class="field row">
+  <div class="field"><label>x mínimo</label><input type="text" id="graphXMin" value="-10"></div>
+  <div class="field"><label>x máximo</label><input type="text" id="graphXMax" value="10"></div>
+</div>
+<div class="toolActions"><button type="button" class="btnGeneral" id="graphPlot">Plotar gráfico</button></div>
+<div id="graphCanvasWrap"><canvas id="graphCanvas" width="640" height="420"></canvas></div>
+<div class="resultBox" id="graphResult"><div class="sub">O resultado aparecerá aqui</div></div>
+</div>`,
+  extraJs: ['/assets/js/graphing.js']
+},
+
+/* ============ FINANÇAS (salário e benefícios) ============ */
+{
+  slug: 'calculadora-salario-liquido', title: 'Calculadora de Salário Líquido — Calculadora Fácil',
+  description: 'Calcule o salário líquido a partir do salário bruto, descontando INSS e IRRF.',
+  activeNav: 'finance', breadcrumb: 'Finanças › Salário líquido',
+  body: h.card('Calculadora de Salário Líquido',
+    h.field('Salário bruto (R$)', h.num('in1', 'Ex: 3000')) +
+    h.field('Número de dependentes', h.num('in2', '0')) +
+    h.btn('Calcular salário líquido') + h.result()),
+  script: `
+document.getElementById('btnCalc').addEventListener('click',function(){
+  var gross=CF.parseNum(document.getElementById('in1').value);
+  var dep=CF.parseNum(document.getElementById('in2').value)||0;
+  var box=document.getElementById('result');
+  if(isNaN(gross)||gross<=0){CF.showResult(box,'Erro','Digite um salário bruto válido',true);return;}
+  var r=ENG.payroll.netSalary(gross,dep);
+  box.classList.remove('error');
+  box.innerHTML='<div class="big">'+CF.money(r.net)+'</div>'+
+    '<table style="margin:14px auto 0;max-width:320px;text-align:left;font-size:14px;width:100%">'+
+    '<tr><td>Salário bruto</td><td style="text-align:right">'+CF.money(r.gross)+'</td></tr>'+
+    '<tr><td>(−) INSS</td><td style="text-align:right">'+CF.money(r.inss)+'</td></tr>'+
+    '<tr><td>(−) IRRF</td><td style="text-align:right">'+CF.money(r.irrf)+'</td></tr>'+
+    '<tr style="font-weight:700;border-top:1px solid #ccc"><td>(=) Salário líquido</td><td style="text-align:right">'+CF.money(r.net)+'</td></tr>'+
+    '</table>';
+});`
+},
+{
+  slug: 'calculadora-ferias', title: 'Calculadora de Férias — Calculadora Fácil',
+  description: 'Calcule o valor líquido das suas férias, com o terço constitucional e descontos de INSS/IRRF.',
+  activeNav: 'finance', breadcrumb: 'Finanças › Férias',
+  body: h.card('Calculadora de Férias',
+    h.field('Salário mensal (R$)', h.num('in1', 'Ex: 3000')) +
+    h.row(h.field('Dias de férias', h.num('in2', '30')), h.field('Dias vendidos (abono)', h.num('in3', '0'))) +
+    h.field('Número de dependentes', h.num('in4', '0')) +
+    h.btn('Calcular férias') + h.result()),
+  script: `
+document.getElementById('btnCalc').addEventListener('click',function(){
+  var salary=CF.parseNum(document.getElementById('in1').value);
+  var days=CF.parseNum(document.getElementById('in2').value)||30;
+  var sell=CF.parseNum(document.getElementById('in3').value)||0;
+  var dep=CF.parseNum(document.getElementById('in4').value)||0;
+  var box=document.getElementById('result');
+  if(isNaN(salary)||salary<=0){CF.showResult(box,'Erro','Digite um salário válido',true);return;}
+  if(days<1||days>30){CF.showResult(box,'Erro','Dias de férias deve ser entre 1 e 30',true);return;}
+  var r=ENG.payroll.vacationPay(salary,days,sell,dep);
+  box.classList.remove('error');
+  box.innerHTML='<div class="big">'+CF.money(r.totalReceivable)+'</div>'+
+    '<table style="margin:14px auto 0;max-width:340px;text-align:left;font-size:14px;width:100%">'+
+    '<tr><td>Férias ('+days+' dias)</td><td style="text-align:right">'+CF.money(r.vacationGross)+'</td></tr>'+
+    '<tr><td>(+) 1/3 constitucional</td><td style="text-align:right">'+CF.money(r.bonus)+'</td></tr>'+
+    '<tr><td>(−) INSS</td><td style="text-align:right">'+CF.money(r.inss)+'</td></tr>'+
+    '<tr><td>(−) IRRF</td><td style="text-align:right">'+CF.money(r.irrf)+'</td></tr>'+
+    (sell>0?'<tr><td>(+) Abono pecuniário ('+sell+' dias, isento)</td><td style="text-align:right">'+CF.money(r.abono+r.abonoBonus)+'</td></tr>':'')+
+    '<tr style="font-weight:700;border-top:1px solid #ccc"><td>(=) Total a receber</td><td style="text-align:right">'+CF.money(r.totalReceivable)+'</td></tr>'+
+    '</table>';
+});`
 }
 ];
 

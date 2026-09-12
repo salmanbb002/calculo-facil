@@ -9,7 +9,11 @@ export const NAV = [
   {
     id: 'calculatrice', label: 'Calculadora', panel: 'navCalculatrice',
     groups: [
-      { title: 'Calculadoras essenciais', links: [{ href: '/', label: 'Calculadora online', hot: true }] },
+      { title: 'Calculadoras essenciais', links: [
+        { href: '/', label: 'Calculadora online', hot: true },
+        { href: '/calculadora-cientifica', label: 'Calculadora científica', hot: true },
+        { href: '/calculadora-grafica', label: 'Calculadora gráfica', hot: true }
+      ] },
       { title: 'Raízes', links: [
         { href: '/calculo-raiz-quadrada', label: 'Raiz quadrada (√)' },
         { href: '/calculo-raiz-cubica', label: 'Raiz cúbica (∛)' }
@@ -83,6 +87,10 @@ export const NAV = [
   {
     id: 'finance', label: 'Finanças', panel: 'navFinance',
     groups: [
+      { title: 'Salário & benefícios', links: [
+        { href: '/calculadora-salario-liquido', label: 'Calculadora de salário líquido', hot: true },
+        { href: '/calculadora-ferias', label: 'Calculadora de férias', hot: true }
+      ]},
       { title: 'IVA & percentagens', links: [
         { href: '/calcular-iva', label: 'Cálculo IVA', hot: true },
         { href: '/percentagem', label: 'Percentagens (cálculo, adição, subtração)' },

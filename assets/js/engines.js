@@ -253,6 +253,222 @@ ENG.geometry = {
   }
 };
 
+/* ---------------- scientific expression engine (shared by calculadora-cientifica and calculadora-grafica) ---------------- */
+ENG.sci = {
+  // Tokenizer + recursive-descent parser + evaluator for expressions like
+  // "sin(x)+sqrt(2)^2-3!" . Supports: + - * / ^ % ! ( ) , functions
+  // sin cos tan asin acos atan log ln sqrt abs exp, constants pi e, and a
+  // free variable x (for graphing). angleMode: 'deg' | 'rad'.
+  tokenize: function (expr) {
+    var tokens = [], i = 0, s = expr.replace(/\s+/g, '');
+    var isDigit = function (c) { return c >= '0' && c <= '9'; };
+    var isAlpha = function (c) { return /[a-zA-Z]/.test(c); };
+    while (i < s.length) {
+      var c = s[i];
+      if (isDigit(c) || (c === '.' && isDigit(s[i + 1]))) {
+        var j = i; while (j < s.length && (isDigit(s[j]) || s[j] === '.')) j++;
+        tokens.push({ t: 'num', v: parseFloat(s.slice(i, j)) }); i = j;
+      } else if (isAlpha(c)) {
+        var k = i; while (k < s.length && isAlpha(s[k])) k++;
+        tokens.push({ t: 'id', v: s.slice(i, k) }); i = k;
+      } else if ('+-*/^%!(),'.indexOf(c) !== -1) {
+        tokens.push({ t: 'op', v: c }); i++;
+      } else { i++; } // skip unknown char
+    }
+    return tokens;
+  },
+  parse: function (expr) {
+    var tokens = ENG.sci.tokenize(expr), pos = 0;
+    function peek() { return tokens[pos]; }
+    function next() { return tokens[pos++]; }
+    function parseExpr() { // + -
+      var node = parseTerm();
+      while (peek() && peek().t === 'op' && (peek().v === '+' || peek().v === '-')) {
+        var op = next().v; node = { type: 'bin', op: op, a: node, b: parseTerm() };
+      }
+      return node;
+    }
+    function parseTerm() { // * /
+      var node = parseUnary();
+      while (peek() && peek().t === 'op' && (peek().v === '*' || peek().v === '/' || peek().v === '%')) {
+        var op = next().v; node = { type: 'bin', op: op, a: node, b: parseUnary() };
+      }
+      return node;
+    }
+    function parseUnary() { // unary minus
+      if (peek() && peek().t === 'op' && peek().v === '-') { next(); return { type: 'neg', a: parseUnary() }; }
+      if (peek() && peek().t === 'op' && peek().v === '+') { next(); return parseUnary(); }
+      return parsePow();
+    }
+    function parsePow() { // ^ (right-assoc) then postfix !
+      var node = parsePostfix();
+      if (peek() && peek().t === 'op' && peek().v === '^') { next(); node = { type: 'bin', op: '^', a: node, b: parseUnary() }; }
+      return node;
+    }
+    function parsePostfix() {
+      var node = parseAtom();
+      while (peek() && peek().t === 'op' && peek().v === '!') { next(); node = { type: 'fact', a: node }; }
+      return node;
+    }
+    function parseAtom() {
+      var tk = peek();
+      if (!tk) return { type: 'num', v: 0 };
+      if (tk.t === 'num') { next(); return { type: 'num', v: tk.v }; }
+      if (tk.t === 'op' && tk.v === '(') {
+        next(); var node = parseExpr();
+        if (peek() && peek().v === ')') next();
+        return node;
+      }
+      if (tk.t === 'id') {
+        next();
+        var name = tk.v.toLowerCase();
+        if (peek() && peek().t === 'op' && peek().v === '(') {
+          next(); var arg = parseExpr(); var arg2 = null;
+          if (peek() && peek().v === ',') { next(); arg2 = parseExpr(); }
+          if (peek() && peek().v === ')') next();
+          return { type: 'call', name: name, a: arg, b: arg2 };
+        }
+        return { type: 'id', name: name };
+      }
+      next(); return { type: 'num', v: 0 };
+    }
+    return parseExpr();
+  },
+  factorial: function (n) { n = Math.round(n); if (n < 0) return NaN; var r = 1; for (var i = 2; i <= n; i++) r *= i; return r; },
+  evaluate: function (ast, ctx) {
+    ctx = ctx || {};
+    var angleMode = ctx.angleMode || 'deg';
+    function toRad(v) { return angleMode === 'deg' ? v * Math.PI / 180 : v; }
+    function ev(node) {
+      switch (node.type) {
+        case 'num': return node.v;
+        case 'neg': return -ev(node.a);
+        case 'fact': return ENG.sci.factorial(ev(node.a));
+        case 'id':
+          if (node.name === 'pi') return Math.PI;
+          if (node.name === 'e') return Math.E;
+          if (node.name === 'x' && ctx.x !== undefined) return ctx.x;
+          if (node.name === 'ans' && ctx.ans !== undefined) return ctx.ans;
+          return NaN;
+        case 'bin':
+          var a = ev(node.a), b = ev(node.b);
+          if (node.op === '+') return a + b;
+          if (node.op === '-') return a - b;
+          if (node.op === '*') return a * b;
+          if (node.op === '/') return a / b;
+          if (node.op === '%') return a % b;
+          if (node.op === '^') return Math.pow(a, b);
+          return NaN;
+        case 'call':
+          var x1 = ev(node.a);
+          switch (node.name) {
+            case 'sin': return Math.sin(toRad(x1));
+            case 'cos': return Math.cos(toRad(x1));
+            case 'tan': return Math.tan(toRad(x1));
+            case 'asin': return angleMode === 'deg' ? Math.asin(x1) * 180 / Math.PI : Math.asin(x1);
+            case 'acos': return angleMode === 'deg' ? Math.acos(x1) * 180 / Math.PI : Math.acos(x1);
+            case 'atan': return angleMode === 'deg' ? Math.atan(x1) * 180 / Math.PI : Math.atan(x1);
+            case 'log': return Math.log10(x1);
+            case 'ln': return Math.log(x1);
+            case 'sqrt': return Math.sqrt(x1);
+            case 'abs': return Math.abs(x1);
+            case 'exp': return Math.exp(x1);
+            case 'root': return node.b ? Math.pow(x1, 1 / ev(node.b)) : Math.sqrt(x1);
+            default: return NaN;
+          }
+        default: return NaN;
+      }
+    }
+    return ev(ast);
+  },
+  run: function (expr, ctx) {
+    try { return ENG.sci.evaluate(ENG.sci.parse(expr), ctx); } catch (e) { return NaN; }
+  }
+};
+
+/* ---------------- payroll (INSS / IRRF - Brazil, reference tables) ---------------- */
+/* Valores de referência (tabelas progressivas vigentes em 2024–2025).
+   As faixas de INSS e IRRF são reajustadas anualmente pelo governo federal
+   — confira sempre a tabela vigente na Receita Federal / INSS antes de usar
+   o resultado para decisões oficiais. */
+ENG.payroll = {
+  INSS_TABLE: [
+    { limit: 1412.00, rate: 0.075 },
+    { limit: 2666.68, rate: 0.09 },
+    { limit: 4000.03, rate: 0.12 },
+    { limit: 7786.02, rate: 0.14 }
+  ],
+  IRRF_TABLE: [
+    { limit: 2259.20, rate: 0, deduction: 0 },
+    { limit: 2826.65, rate: 0.075, deduction: 169.44 },
+    { limit: 3751.05, rate: 0.15, deduction: 381.44 },
+    { limit: 4664.68, rate: 0.225, deduction: 662.77 },
+    { limit: Infinity, rate: 0.275, deduction: 896.00 }
+  ],
+  IRRF_DEPENDENT_DEDUCTION: 189.59,
+  calcInss: function (gross) {
+    var table = ENG.payroll.INSS_TABLE, total = 0, prevLimit = 0;
+    for (var i = 0; i < table.length; i++) {
+      var band = table[i];
+      var bandTop = Math.min(gross, band.limit);
+      if (bandTop > prevLimit) total += (bandTop - prevLimit) * band.rate;
+      prevLimit = band.limit;
+      if (gross <= band.limit) break;
+    }
+    // acima do teto, contribui sobre o teto da última faixa
+    if (gross > table[table.length - 1].limit) {
+      total = 0; prevLimit = 0;
+      for (var j = 0; j < table.length; j++) {
+        var b = table[j];
+        total += (b.limit - prevLimit) * b.rate;
+        prevLimit = b.limit;
+      }
+    }
+    return total;
+  },
+  calcIrrf: function (base, dependents) {
+    var deduction = (dependents || 0) * ENG.payroll.IRRF_DEPENDENT_DEDUCTION;
+    var adjustedBase = base - deduction;
+    if (adjustedBase <= 0) return 0;
+    var table = ENG.payroll.IRRF_TABLE;
+    for (var i = 0; i < table.length; i++) {
+      if (adjustedBase <= table[i].limit) {
+        var tax = adjustedBase * table[i].rate - table[i].deduction;
+        return Math.max(0, tax);
+      }
+    }
+    return 0;
+  },
+  netSalary: function (gross, dependents) {
+    var inss = ENG.payroll.calcInss(gross);
+    var irrfBase = gross - inss;
+    var irrf = ENG.payroll.calcIrrf(irrfBase, dependents);
+    var net = gross - inss - irrf;
+    return { gross: gross, inss: inss, irrf: irrf, net: net };
+  },
+  vacationPay: function (monthlySalary, days, sellDays, dependents) {
+    days = days || 30; sellDays = sellDays || 0; dependents = dependents || 0;
+    var dailyRate = monthlySalary / 30;
+    var vacationGross = dailyRate * days;
+    var bonus = vacationGross / 3; // terço constitucional
+    var grossTotal = vacationGross + bonus;
+    var abono = 0, abonoBonus = 0;
+    if (sellDays > 0) {
+      abono = dailyRate * sellDays;
+      abonoBonus = abono / 3; // o abono também recebe o terço, mas é isento de INSS/IRRF
+    }
+    var inss = ENG.payroll.calcInss(grossTotal);
+    var irrfBase = grossTotal - inss;
+    var irrf = ENG.payroll.calcIrrf(irrfBase, dependents);
+    var net = grossTotal - inss - irrf;
+    return {
+      dailyRate: dailyRate, vacationGross: vacationGross, bonus: bonus, grossTotal: grossTotal,
+      inss: inss, irrf: irrf, net: net,
+      abono: abono, abonoBonus: abonoBonus, totalReceivable: net + abono + abonoBonus
+    };
+  }
+};
+
 /* ---------------- misc ---------------- */
 ENG.misc = {
   average: function (nums) { return nums.reduce(function (a, b) { return a + b; }, 0) / nums.length; },

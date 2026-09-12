@@ -149,8 +149,9 @@ for (const t of TOOLS) {
     slug: t.slug, title: t.title, description: t.description,
     activeNav: t.activeNav, breadcrumb: t.breadcrumb,
     bodyHtml: t.body + extraHtml,
-    extraCss: ['/assets/css/calculator.css'],
-    inlineScript: t.script,
+    extraCss: ['/assets/css/calculator.css', ...(t.extraCss || [])],
+    extraJs: t.extraJs || [],
+    inlineScript: t.script || '',
     jsonLd
   }));
 }

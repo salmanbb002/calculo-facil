@@ -71,5 +71,9 @@ var CF = {
   showResult: function (boxEl, bigText, subText, isError) {
     boxEl.classList.toggle('error', !!isError);
     boxEl.innerHTML = '<div class="big">' + bigText + '</div>' + (subText ? '<div class="sub">' + subText + '</div>' : '');
+  },
+  money: function (n) {
+    if (!isFinite(n)) return '—';
+    return 'R$\u00a0' + n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 };
